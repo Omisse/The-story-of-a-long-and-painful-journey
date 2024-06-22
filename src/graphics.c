@@ -1,4 +1,5 @@
 #include "graphics.h"
+//#include "pnotation.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -21,6 +22,7 @@ void print_grid() {
         double key = map((double)x, (double)D_tmin, (double)(D_tmax - 1), D_rmin,
                          D_rmax);  // remap x from [0,79] to [0.0,4PI]
         double value = cos(key);   // here we getting values for mapped x
+        //double value = calc(notation, key)
         int ypos = (int)round(map(value, R_rmin, R_rmax, (double)R_tmin,
                                   (double)(R_tmax - 1)));  // remap y from [-1.0, 1.0] to [0,25]
         if (is_in_range(ypos, R_tmin, R_tmax - 1)) {
