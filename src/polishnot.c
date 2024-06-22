@@ -64,12 +64,19 @@ double polish_calc(char *str, double x, stack *stack) {
     return (pop(stack));
 }
 
+// мэйн нужен был мне , решил оставить, чтобы было понятно что нужно для работы
 int main() {
+    // str - строка в польской нотации
     char str[30] = "x x x * +";
+    // создание пустого стэка
     stack *stag;
+    //инициализация стэка 
     stag = init();
+    // res = подсчет значения (строка в ПН, x , наш стэк);
     double res = polish_calc(str, 4, stag);
+    // вывод результата
     printf("%lf", res);
+    //очистка стэка
     destroy(&stag);
     return 0;
 }
