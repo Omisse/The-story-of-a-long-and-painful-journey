@@ -5,7 +5,11 @@
 
 #include "stack.h"
 
-double polish_calc(char *str, double x, stack *stack) {
+double polish_calc(char *str, double x) {
+    // создание пустого стэка
+    stack *stack;
+    //инициализация стэка
+    stack = init();
     double res, num = 0, temp;
     for (int i = 0; i < (int)strlen(str); i++) {
         if (('0' <= str[i]) && (str[i] <= '9')) {
@@ -61,22 +65,19 @@ double polish_calc(char *str, double x, stack *stack) {
         } else if (str[i] == 'x')
             push(stack, x);
     }
-    return (pop(stack));
+    res = pop(stack);
+    //очистка стека
+    destroy(&stack);
+    return (res);
 }
 
 // мэйн нужен был мне , решил оставить, чтобы было понятно что нужно для работы
 int main() {
     // str - строка в польской нотации
-    char str[30] = "x x x * +";
-    // создание пустого стэка
-    stack *stag;
-    //инициализация стэка 
-    stag = init();
+    char str[30] = "x x x * + -";
     // res = подсчет значения (строка в ПН, x , наш стэк);
-    double res = polish_calc(str, 4, stag);
+    double res = polish_calc(str, 4);
     // вывод результата
     printf("%lf", res);
-    //очистка стэка
-    destroy(&stag);
     return 0;
 }
