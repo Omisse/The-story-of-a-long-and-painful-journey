@@ -1,6 +1,5 @@
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "stack.h"
@@ -72,12 +71,14 @@ double polish_calc(char *str, double x) {
 }
 
 // мэйн нужен был мне , решил оставить, чтобы было понятно что нужно для работы
+/*
 int main() {
-    // str - строка в польской нотации
+    // str - строка в польской нотации (в обратной польской, кого мы тут обманываем)
     char str[30] = "x x x * + -";
-    // res = подсчет значения (строка в ПН, x , наш стэк);
+    // res = подсчет значения (строка в ПН, x);
     double res = polish_calc(str, 4);
     // вывод результата
     printf("%lf", res);
     return 0;
 }
+*/

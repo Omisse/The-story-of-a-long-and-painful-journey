@@ -28,7 +28,7 @@ void itz_place_bracket(char **buffer, char *from);
 
 char *strrep(char **start, char *to, const char *source);
 
-char *rpn(char *buff);
+void rpn(char **buff);
 
 int readtoken(char **from, char **to);
 

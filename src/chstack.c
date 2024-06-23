@@ -13,13 +13,13 @@ CharStack chs_init() {
 int chs_is_empty(CharStack stack) { return stack.topIndex == -1; }
 
 void chs_push(CharStack* stack, char* str) {
-    stack->strings = realloc(stack->strings,sizeof(char*)*((stack->topIndex)+2));
+    stack->strings = realloc(stack->strings, sizeof(char*) * ((stack->topIndex) + 2));
     stack->topIndex += 1;
-    stack->strings[stack->topIndex] = malloc((1+strlen(str))*sizeof(char));
+    stack->strings[stack->topIndex] = malloc((1 + strlen(str)) * sizeof(char));
     strcpy(stack->strings[stack->topIndex], str);
 }
 
-//returned char* needs to be manually freed
+// returned char* needs to be manually freed
 char* chs_pop(CharStack* stack) {
     char* result = NULL;
     if (!chs_is_empty(*stack)) {

@@ -11,31 +11,36 @@ BPATH=build
 SRCPATH=src
 CLNGPATH:=materials/linters/.clang-format
 
-#Q1_NAMES=dmanager_module.c
-#Q1_FILE=$(addprefix $(SRCPATH)/,$(Q1_NAMES))
-#Q1_OBJ=$(Q1_FILE:.c=.o)
-#Q1_OUT=$(BPATH)/Quest_1
-
-T_NAMES=graphics.c graph.c
-T_FILE=$(addprefix $(SRCPATH)/,$(T_NAMES))
-T_OBJ=$(T_FILE:.c=.o)
-T_OUT=$(BPATH)/test.exe
+NAMES=stack.c polishnot.c graphics.c chstack.c input.c graph.c
+FILE=$(addprefix $(SRCPATH)/,$(NAMES))
+OBJ=$(FILE:.c=.o)
+OUT=$(BPATH)/graph
 
 .o:.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-test: test_run test_clean
+all: build clean
 
-test_build: $(T_OBJ)
-	$(LC) $(LFLAGS) $(T_FILE)
-	$(CPPC) $(CPPCFLAGS) $(T_FILE)
-	$(CC) $(CFLAGS) $(T_OBJ) -o $(T_OUT)
+debug: build_debug clean run-verbose
 
-test_clean: $(T_OBJ)
-	rm $^
+run: build $(OUT)
+	./$(OUT)
 
-test_run_leaks: test_build
-	leaks -atExit -- ./$(T_OUT)
+run-leaks: build $(OUT)
+	leaks -atExit -- ./$(OUT)
 
-test_run: test_build
-	./$(T_OUT)
+run-verbose: build_debug $(OUT)
+	./$(OUT)
+
+build: $(OBJ)
+	$(LC) $(LFLAGS) $(FILE)
+	$(CPPC) $(CPPCFLAGS) $(FILE)
+	$(CC) $(CFLAGS) $(OBJ) -o $(OUT)
+
+build_debug: $(OBJ)
+	$(LC) $(LFLAGS) $(FILE)
+	$(CPPC) $(CPPCFLAGS) $(FILE)
+	$(CC) $(CFLAGS) -g -DV $(OBJ) -o $(OUT)
+
+clean:
+	rm src/*.o
