@@ -7,7 +7,7 @@
 #include "chstack.h"
 
 #define _BUFSIZE 255  // needs some change in scanf(-1) if changed here
-//#define V
+#define V
 
 #define OPS "+-/*"
 #define NUM_DOT ".0123456789"
@@ -519,9 +519,11 @@ void rpn(char** buffer) {
     printf("rpn.prenotation: %s\n", o_str);
 #endif
     free(*buffer);
-    *buffer = (char*)realloc(o_str, (2+strlen(o_str))*sizeof(char));
+    *buffer = (char*)malloc((2+strlen(o_str))*sizeof(char));
+    *buffer = strcpy(*buffer, o_str);
+    free(o_str);
 #ifdef V
-    printf("rpn.notation:\n%s\n", *buffer);
+    printf("rpn.notation: %s\n", *buffer);
     fflush(stdout);
 #endif
 }
