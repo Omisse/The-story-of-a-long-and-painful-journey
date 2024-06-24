@@ -19,8 +19,8 @@
 #define D_rmin 0.0
 #define D_rmax 4 * M_PI
 
-#define R_rmin -3.0
-#define R_rmax 3.0
+#define R_rmin -1.0
+#define R_rmax 1.0
 
 int is_in_range(int val, int min, int max) { return (val <= max && val >= min); }
 
@@ -29,7 +29,7 @@ double map(double val, double s1, double e1, double s2, double e2) {
 }
 
 void print_grid(char* notation) {
-    printf("print_grid.notation: %s\n", notation);
+    //printf("print_grid.notation: %s\n", notation);
     int grid[D_tmax][R_tmax];
     for (int y = 0; y < R_tmax; y++) {
         for (int x = 0; x < D_tmax; x++) {
@@ -46,7 +46,7 @@ void print_grid(char* notation) {
         free(notval);
         notval = NULL;
         int ypos = (int)round(map(value, R_rmin, R_rmax, (double)R_tmax-1.0,
-                                  (double)(R_tmin)));  // remap y from [-1.0, 1.0] to [24,0]
+                                  (double)(R_tmin)));  // remap y from [-1.0, 1.0] to [24,0] (24 is equal to -1 since it will be at the bottom of the grid)
         if (is_in_range(ypos, R_tmin, R_tmax - 1)) {
             grid[x][ypos] = NODE;
         }
