@@ -13,13 +13,16 @@ int main(void) {
             printf("n/a\n");
             done = 1;
         }
-
-        rpn(&string);
-        print_grid(string);
+        if (!done) {
+            rpn(&string);
+            print_grid(string);
         // printf("%s\n", string);
-        free(string);
+            free(string);
+            
+        }
         fflush(stdin);
         fflush(stdout);
+        
         char sym = 32;
         printf("Try again?(y for yes, any other for no))\n");
         scanf("%c", &sym);

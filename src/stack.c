@@ -38,9 +38,13 @@ void push(stack *stack, double elem) {
 }
 
 double pop(stack *stack) {
-    if (stack->top == 0) return -1;
-    stack->top--;
-    return stack->mass[stack->top];
+    double val = 0;
+    if (stack->top == 0) { val = 1.0/0.0; }
+    else {
+        stack->top--;
+        val = stack->mass[stack->top];
+    }
+    return val;
 }
 
 void destroy(stack **stack) {

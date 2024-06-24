@@ -14,7 +14,7 @@ CLNGPATH:=materials/linters/.clang-format
 NAMES=stack.c polishnot.c graphics.c chstack.c input.c graph.c
 FILE=$(addprefix $(SRCPATH)/,$(NAMES))
 OBJ=$(FILE:.c=.o)
-OUT=$(BPATH)/graph
+OUT=$(BPATH)/graph.exe
 
 .o:.c
 	$(CC) $(CFLAGS) -c $^ -o $@
@@ -33,13 +33,13 @@ run-verbose: build_debug $(OUT)
 	./$(OUT)
 
 build: $(OBJ)
-	$(LC) $(LFLAGS) $(FILE)
-	$(CPPC) $(CPPCFLAGS) $(FILE)
+#	$(LC) $(LFLAGS) $(FILE)
+#	$(CPPC) $(CPPCFLAGS) $(FILE)
 	$(CC) $(CFLAGS) $(OBJ) -o $(OUT)
 
 build_debug: $(OBJ)
-	$(LC) $(LFLAGS) $(FILE)
-	$(CPPC) $(CPPCFLAGS) $(FILE)
+#	$(LC) $(LFLAGS) $(FILE)
+#	$(CPPC) $(CPPCFLAGS) $(FILE)
 	$(CC) $(CFLAGS) -g -DV $(OBJ) -o $(OUT)
 
 clean:

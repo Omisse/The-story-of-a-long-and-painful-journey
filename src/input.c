@@ -7,7 +7,7 @@
 #include "chstack.h"
 
 #define _BUFSIZE 100  // needs some change in scanf(-1) if changed here
-//#define V
+#define V
 
 #define OPS "+-/*"
 #define NUM_DOT ".0123456789"
@@ -49,6 +49,8 @@ char* get_validated_string() {
     }
     return buffer;
 }
+
+#pragma region validation
 
 int validate_input(char** buffer) {
     if (*buffer == NULL) {
@@ -351,6 +353,7 @@ int is_pattern(char** ptr) {
 
     return valid;
 }
+#pragma endregion
 
 #define INVALID 0
 #define NUMBER 1
@@ -422,7 +425,7 @@ void itz_place_bracket(char** buffer, char* from) {
 char* strrep(char** start, char* to, const char* source) {
     char* new_string = malloc((2 + strlen(source) + strlen(*start)) * sizeof(char));
     if (new_string == NULL) {
-        printf("strins: malloc fail\n");
+        perror("strins: malloc fail\n");
         free(*start);
         exit(1);
     }
@@ -433,14 +436,14 @@ char* strrep(char** start, char* to, const char* source) {
     strcat(new_string, next_string);
     free(*start);
     *start = NULL;
-    *start = realloc(new_string, 1 + strlen(new_string) * sizeof(char));
+    *start = realloc(new_string, (1 + strlen(new_string)) * sizeof(char));
     if (*start == NULL) {
-        printf("strins: malloc fail\n");
+        perror("strins: malloc fail\n");
         exit(1);
     }
     return *start;
 }
-
+#pragma region reverse polish
 void rpn(char** buffer) {
     char* buff = *buffer;
     if (buff == NULL) {
@@ -450,10 +453,10 @@ void rpn(char** buffer) {
     buff = *buffer;
 
     CharStack stack = chs_init();
-    char* o_str = (char*)malloc(sizeof(char) * (strlen(buff) + 1));
+    char* o_str = (char*)malloc(sizeof(char) * (strlen(buff)*2));
 
     if (o_str == NULL) {
-        printf("malloc fail\n");
+        perror("malloc fail\n");
         free(buff);
         exit(1);
     }
@@ -500,7 +503,9 @@ void rpn(char** buffer) {
                 if (temp_token != NULL) {
                     strcat(o_str, temp_token);  // check for memleaks please
                     free(temp_token);
+                    temp_token = NULL;
                 }
+                temp_token = chs_peek(stack);
             }
             chs_push(&stack, token);
         }
@@ -521,22 +526,18 @@ void rpn(char** buffer) {
     }
 
     chs_destroy(&stack);
-    char* spacer = o_str;
-    while (*spacer) {
-        spacer++;
-    }
-    if (spacer != o_str) {
-        spacer--;
-        *spacer = '\0';
-    }
-
-    free(*buffer);
-    *buffer = (char*)realloc(o_str, (1 + strlen(o_str)) * sizeof(char));
 #ifdef V
-    printf("RPN DONE, notation:\n%s\n", *buffer);
+    printf("rpn.prenotation: %s\n", o_str);
+#endif
+    free(*buffer);
+    *buffer = (char*)realloc(o_str, (2+strlen(o_str))*sizeof(char));
+#ifdef V
+    printf("rpn.notation:\n%s\n", *buffer);
+    fflush(stdout);
 #endif
 }
 
+#pragma region tokens
 /*
 #define INVALID 0
 #define NUMBER 1
@@ -612,6 +613,7 @@ int get_type(char tokenpart) {
     }
     return type;
 }
+#pragma endregion
 
 int eval_op(char op) {
     int eval = 0;
@@ -622,3 +624,4 @@ int eval_op(char op) {
     }
     return eval;
 }
+#pragma endregion
