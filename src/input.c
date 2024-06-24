@@ -333,7 +333,7 @@ int is_pattern(char** ptr) {
     if (valid && !addptr) {
         addptr = 4;
     }
-    valid = valid || (strstr(*ptr, SQRT_S) != NULL);
+    valid = valid || (strstr(*ptr, LN_S) != NULL);
     if (valid && !addptr) {
         addptr = 2;
     }
