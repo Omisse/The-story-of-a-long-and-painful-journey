@@ -4,8 +4,6 @@ int validate_input(char **buffer);
 
 int is_in(char val, const char *values);
 
-void remove_spaces(char **buff);
-
 int check_allowed_chars(char *buff);
 
 int check_brackets(char *buff);

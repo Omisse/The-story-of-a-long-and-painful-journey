@@ -6,14 +6,13 @@
 
 #include "chstack.h"
 
-#define _BUFSIZE 100  // needs some change in scanf(-1) if changed here
-#define V
+#define _BUFSIZE 255  // needs some change in scanf(-1) if changed here
+//#define V
 
 #define OPS "+-/*"
 #define NUM_DOT ".0123456789"
 #define NUM_X "x.0123456789"
 #define FLETTERS "sincostanctgsqrtln"
-#define FSTARTS ""
 #define BRACKETS "()"
 
 #define SIN_S "sin("
@@ -42,7 +41,17 @@ int main() {
 
 char* get_validated_string() {
     char* buffer = malloc(sizeof(char) * _BUFSIZE);
-    scanf("%99s", buffer);
+    int step = 0;
+    char ch = ' ';
+    while (step < _BUFSIZE-1 && ch != '\0') {
+        scanf("%c", &ch);
+        if (ch == '\n') { ch = '\0'; }
+        if (ch != ' ') {
+            buffer[step] = ch;
+            step++;
+        }
+    }
+    fflush(stdin);
     if (!validate_input(&buffer)) {
         free(buffer);
         buffer = NULL;
@@ -58,7 +67,9 @@ int validate_input(char** buffer) {
     }
 
     int valid = 1;
-    remove_spaces(buffer);
+    #ifdef V
+    printf("validation.buffer: %s\n",*buffer);
+    #endif
     valid = check_allowed_chars(*buffer);
     if (valid) {
 #ifdef V
@@ -115,32 +126,6 @@ int is_in(char val, const char* values) {
     return found;
 }
 
-void remove_spaces(char** buff) {
-    if (*buff == NULL) {
-        return;
-    }
-
-    char* new_buffer = malloc(strlen(*buff) + 1);
-    if (new_buffer == NULL) {
-        printf("malloc fail\n");
-        free(*buff);
-        exit(1);
-    }
-
-    char* nbs = new_buffer;
-    char* ptr = *buff;
-    while (*ptr) {
-        if (*ptr != ' ') {
-            *new_buffer = *ptr;
-            new_buffer++;
-        }
-        ptr++;
-    }
-    *new_buffer = '\0';
-    free(*buff);
-    *buff = nbs;
-}
-
 // validation based on pre-existing arrays of possible chars in input without spaces
 int check_allowed_chars(char* buff) {
     if (buff == NULL) {
@@ -155,6 +140,10 @@ int check_allowed_chars(char* buff) {
         if (*ptr == 'x' && (is_in(*ptr + 1, NUM_DOT) || is_in(*ptr - 1, NUM_DOT))) {
             valid = 0;
         }
+        #ifdef V
+        printf("ptr: %c ||", *ptr);
+        printf("valid: %d\n", valid);
+        #endif
         ptr++;
     }
     return valid;

@@ -31,6 +31,7 @@ int main(void) {
         } else {
             done = 1;
         }
+        fflush(stdin);
     }
     return 0;
 }
